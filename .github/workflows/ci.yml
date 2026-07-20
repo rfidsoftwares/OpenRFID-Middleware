@@ -1,0 +1,31 @@
+name: OpenRFID Middleware CI Pipeline
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    name: Build & Run Test Matrix
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+        dotnet-quality: 'preview'
+
+    - name: Restore Dependencies
+      run: dotnet restore OpenRFID.slnx
+
+    - name: Build Solution
+      run: dotnet build OpenRFID.slnx --configuration Release --no-restore
+
+    - name: Execute Test Suite (52 Tests)
+      run: dotnet test OpenRFID.slnx --configuration Release --no-build --verbosity normal

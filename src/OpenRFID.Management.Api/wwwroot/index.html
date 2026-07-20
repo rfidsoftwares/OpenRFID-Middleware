@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenRFID Middleware - Management Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Header Nav -->
+        <header class="app-header">
+            <div class="logo-area">
+                <span class="brand-icon">📡</span>
+                <div class="brand-title">
+                    <h1>OpenRFID Middleware</h1>
+                    <span class="version-badge">v1.0.0</span>
+                </div>
+            </div>
+
+            <!-- Health Telemetry Strip -->
+            <div class="system-status-strip">
+                <div class="status-pill" id="ws-status-pill">
+                    <span class="status-dot disconnected"></span>
+                    <span id="ws-status-text">Connecting...</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-label">Connected Readers</span>
+                    <span class="metric-value" id="connected-readers-count">0/0</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-label">Tags Processed</span>
+                    <span class="metric-value highlight" id="tags-processed-count">0</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-label">Offline Queue</span>
+                    <span class="metric-value warning" id="offline-queue-count">0</span>
+                </div>
+                <button class="btn btn-secondary btn-sm" id="btn-simulate-tag">⚡ Inject Tag</button>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="telemetry">📊 Live Telemetry</button>
+            <button class="tab-btn" data-tab="readers">🔌 Readers Setup</button>
+            <button class="tab-btn" data-tab="filters">🎯 Filters & Dedup</button>
+            <button class="tab-btn" data-tab="dispatcher">🚀 HTTP Dispatcher & Templates</button>
+            <button class="tab-btn" data-tab="logs">📝 System Diagnostics & Logs</button>
+        </nav>
+
+        <!-- Main Content Body -->
+        <main class="main-content">
+            <!-- TAB 1: Live Telemetry -->
+            <section id="tab-telemetry" class="tab-content active">
+                <div class="section-header">
+                    <h2>Live Tag Stream Telemetry</h2>
+                    <div class="action-bar">
+                        <button class="btn btn-outline btn-sm" id="btn-pause-stream">⏸️ Pause Stream</button>
+                        <button class="btn btn-outline btn-sm" id="btn-clear-stream">🗑️ Clear Table</button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="telemetry-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp (UTC)</th>
+                                <th>EPC</th>
+                                <th>TID</th>
+                                <th>Reader ID</th>
+                                <th>Antenna</th>
+                                <th>RSSI</th>
+                                <th>Read Count</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="telemetry-table-body">
+                            <tr class="empty-row">
+                                <td colspan="8">Waiting for incoming RFID tag reads...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- TAB 2: Readers Setup -->
+            <section id="tab-readers" class="tab-content">
+                <div class="section-header">
+                    <h2>Reader Hardware Configuration</h2>
+                    <button class="btn btn-primary" id="btn-add-reader">+ Add Reader</button>
+                </div>
+
+                <div class="grid-layout" id="readers-grid">
+                    <!-- Reader cards rendered dynamically -->
+                </div>
+            </section>
+
+            <!-- TAB 3: Filters & Deduplication -->
+            <section id="tab-filters" class="tab-content">
+                <div class="section-header">
+                    <h2>Filtering & Deduplication Engine</h2>
+                    <button class="btn btn-primary" id="btn-save-filters">💾 Save Filter Config</button>
+                </div>
+
+                <div class="form-grid">
+                    <!-- Card 1: Deduplication -->
+                    <div class="card">
+                        <h3>⏱️ Deduplication Rules</h3>
+                        <div class="form-group">
+                            <label for="sliding-window-sec">Sliding Time Window (Seconds)</label>
+                            <input type="number" id="sliding-window-sec" min="0" max="86400" step="0.5" class="form-input" value="5.0">
+                            <span class="help-text">Ignore duplicate tags read within this duration on the same antenna.</span>
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="daily-unique-toggle">
+                                <span class="slider"></span>
+                            </label>
+                            <span class="label-text">Enable Daily / Shift Unique Mode (Send tag once per day)</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: RSSI & Antenna Filters -->
+                    <div class="card">
+                        <h3>📶 Signal Strength & Hardware Filters</h3>
+                        <div class="form-group">
+                            <label for="min-rssi">Minimum RSSI Threshold (dBm): <span id="rssi-val">-75</span> dBm</label>
+                            <input type="range" id="min-rssi" min="-100" max="-20" value="-75" class="form-range">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="antenna-mask">Antenna Bitmask (e.g. 15 for Ports 1-4)</label>
+                            <input type="number" id="antenna-mask" class="form-input" placeholder="e.g. 15">
+                        </div>
+                    </div>
+
+                    <!-- Card 3: EPC Pattern Tester -->
+                    <div class="card full-width">
+                        <h3>🔍 EPC Regex Pattern Tester</h3>
+                        <div class="form-row">
+                            <div class="form-group flex-1">
+                                <label for="epc-regex">EPC Regex Pattern</label>
+                                <input type="text" id="epc-regex" class="form-input font-mono" placeholder="^E280[0-9A-F]+$">
+                            </div>
+                            <button class="btn btn-secondary align-self-end" id="btn-test-regex">Test Regex</button>
+                        </div>
+                        <div class="form-group">
+                            <label for="test-epcs-input">Sample EPCs (One per line)</label>
+                            <textarea id="test-epcs-input" class="form-textarea font-mono" rows="3">E28011912000000000001234&#10;E20034120123456789&#10;ABCD1234567890</textarea>
+                        </div>
+                        <div id="regex-results-container" class="test-output-box font-mono">
+                            Run test to see EPC regex match results.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: HTTP Dispatcher & Templates -->
+            <section id="tab-dispatcher" class="tab-content">
+                <div class="section-header">
+                    <h2>Server Dispatcher & Payload Templates</h2>
+                    <button class="btn btn-primary" id="btn-save-dispatcher">💾 Save Dispatch Config</button>
+                </div>
+
+                <div class="form-grid">
+                    <!-- Endpoint & Method -->
+                    <div class="card">
+                        <h3>🌐 HTTP Target Configuration</h3>
+                        <div class="form-group">
+                            <label for="http-method">HTTP Method</label>
+                            <select id="http-method" class="form-select">
+                                <option value="POST">POST</option>
+                                <option value="PUT">PUT</option>
+                                <option value="GET">GET</option>
+                                <option value="PATCH">PATCH</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="target-url">Target Endpoint URL</label>
+                            <input type="url" id="target-url" class="form-input" value="http://localhost:8080/api/v1/tags">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="trigger-mode">Dispatch Trigger Mode</label>
+                            <select id="trigger-mode" class="form-select">
+                                <option value="Instant">Instant (Send as read)</option>
+                                <option value="Periodic">Periodic (Flush every N sec)</option>
+                                <option value="BatchCount">Batch Count (Flush every N tags)</option>
+                                <option value="Hybrid">Hybrid (Flush whichever first)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Payload Format & Preview -->
+                    <div class="card">
+                        <h3>📝 Payload Format</h3>
+                        <div class="form-group">
+                            <label for="template-format">Output Format</label>
+                            <select id="template-format" class="form-select">
+                                <option value="json">JSON Array / Object</option>
+                                <option value="form">Form-Urlencoded</option>
+                                <option value="xml">XML</option>
+                                <option value="csv">CSV</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="custom-template">Custom Liquid / Handlebars Template (Optional)</label>
+                            <textarea id="custom-template" class="form-textarea font-mono" rows="3" placeholder="Leave empty for standard format default"></textarea>
+                        </div>
+
+                        <button class="btn btn-secondary w-100" id="btn-preview-template">👁️ Preview Rendered Output</button>
+                    </div>
+
+                    <!-- Interactive Preview Window -->
+                    <div class="card full-width">
+                        <h3>💻 Live Template Preview Box</h3>
+                        <pre id="template-preview-output" class="code-preview font-mono">Click 'Preview Rendered Output' to generate sample payload preview.</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: Logs -->
+            <section id="tab-logs" class="tab-content">
+                <div class="section-header">
+                    <h2>Real-Time System Log Feed</h2>
+                    <button class="btn btn-outline btn-sm" id="btn-clear-logs">🗑️ Clear Logs</button>
+                </div>
+                <div class="log-console font-mono" id="log-console-body">
+                    <div class="log-line info">[System] Connecting to live log feed...</div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal for Adding Reader -->
+    <div class="modal-backdrop" id="reader-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Configure Reader Instance</h3>
+                <button class="modal-close" id="btn-close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="modal-reader-id">Reader ID</label>
+                    <input type="text" id="modal-reader-id" class="form-input" placeholder="e.g. Reader-Gate-1">
+                </div>
+
+                <div class="form-group">
+                    <label for="modal-provider-id">Provider / Hardware Protocol</label>
+                    <select id="modal-provider-id" class="form-select">
+                        <option value="LLRP">LLRP Protocol (Low Level Reader Protocol)</option>
+                        <option value="Identium">Identium Reader API</option>
+                        <option value="Impinj">Impinj Octane SDK / MQTT</option>
+                        <option value="Zebra">Zebra FX Series SDK</option>
+                        <option value="Sockets">TCP/UDP Raw Socket</option>
+                        <option value="Serial">RS232 / RS485 Serial COM Port</option>
+                        <option value="MQTT">MQTT Reader Broker</option>
+                        <option value="Simulator">Virtual RFID Simulator</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group flex-2">
+                        <label for="modal-ip">IP Address / COM Port</label>
+                        <input type="text" id="modal-ip" class="form-input" placeholder="192.168.1.100 or COM3">
+                    </div>
+                    <div class="form-group flex-1">
+                        <label for="modal-port">Port</label>
+                        <input type="number" id="modal-port" class="form-input" placeholder="5084">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="btn-cancel-modal">Cancel</button>
+                <button class="btn btn-primary" id="btn-save-reader-modal">Save Reader</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

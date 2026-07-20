@@ -147,7 +147,15 @@ public sealed class SqliteOfflineQueue : IDisposable
             await conn.OpenAsync(ct);
 
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = $"DELETE FROM OfflineQueue WHERE Id IN ({string.Join(',', idList)});";
+            var paramNames = new List<string>(idList.Count);
+            for (int i = 0; i < idList.Count; i++)
+            {
+                string paramName = $"$p{i}";
+                paramNames.Add(paramName);
+                cmd.Parameters.AddWithValue(paramName, idList[i]);
+            }
+
+            cmd.CommandText = $"DELETE FROM OfflineQueue WHERE Id IN ({string.Join(',', paramNames)});";
             await cmd.ExecuteNonQueryAsync(ct);
         }
         finally

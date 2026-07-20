@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpenRFID.Core.Abstractions\OpenRFID.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\OpenRFID.Core.Dispatch\OpenRFID.Core.Dispatch.csproj" />
+    <ProjectReference Include="..\OpenRFID.Core.Engine\OpenRFID.Core.Engine.csproj" />
+    <ProjectReference Include="..\OpenRFID.Core.Pipeline\OpenRFID.Core.Pipeline.csproj" />
+    <ProjectReference Include="..\OpenRFID.Core.Storage\OpenRFID.Core.Storage.csproj" />
+  </ItemGroup>
+
+</Project>

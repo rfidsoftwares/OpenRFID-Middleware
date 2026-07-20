@@ -1,7 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <ProjectReference Include="..\OpenRFID.Core.Abstractions\OpenRFID.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\OpenRFID.Core.Pipeline\OpenRFID.Core.Pipeline.csproj" />
+    <ProjectReference Include="..\OpenRFID.Core.Dispatch\OpenRFID.Core.Dispatch.csproj" />
+    <ProjectReference Include="..\OpenRFID.Core.Storage\OpenRFID.Core.Storage.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

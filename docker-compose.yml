@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  openrfid-middleware:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: openrfid-middleware
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+    volumes:
+      - openrfid-data:/app/data
+    restart: unless-stopped
+
+  openrfid-simulator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: openrfid-simulator
+    entrypoint: ["dotnet", "OpenRFID.Simulator.dll"]
+    ports:
+      - "5084:5084"
+    restart: unless-stopped
+
+volumes:
+  openrfid-data:
+    driver: local

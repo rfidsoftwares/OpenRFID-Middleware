@@ -5,6 +5,7 @@ namespace OpenRFID.Core.Pipeline.Filters;
 
 /// <summary>
 /// Filter that evaluates tag hardware metadata (RSSI, antenna port mask) and EPC pattern matching (prefix, suffix, length, regex).
+/// Protected against ReDoS via a strict 500ms matching timeout.
 /// </summary>
 public sealed class MetadataFilter : ITagFilter
 {
@@ -39,7 +40,7 @@ public sealed class MetadataFilter : ITagFilter
 
         if (!string.IsNullOrWhiteSpace(regexPattern))
         {
-            _compiledRegex = new Regex(regexPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            _compiledRegex = new Regex(regexPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500));
         }
     }
 
@@ -81,9 +82,19 @@ public sealed class MetadataFilter : ITagFilter
             return FilterResult.Drop($"EPC '{tag.EPC}' does not end with required suffix '{EpcSuffix}'.");
         }
 
-        if (_compiledRegex != null && !_compiledRegex.IsMatch(tag.EPC))
+        if (_compiledRegex != null)
         {
-            return FilterResult.Drop($"EPC '{tag.EPC}' does not match regex pattern '{RegexPattern}'.");
+            try
+            {
+                if (!_compiledRegex.IsMatch(tag.EPC))
+                {
+                    return FilterResult.Drop($"EPC '{tag.EPC}' does not match regex pattern '{RegexPattern}'.");
+                }
+            }
+            catch (RegexMatchTimeoutException)
+            {
+                return FilterResult.Drop($"EPC '{tag.EPC}' regex evaluation timed out after 500ms.");
+            }
         }
 
         return FilterResult.Pass();

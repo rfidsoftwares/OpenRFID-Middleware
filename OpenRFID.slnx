@@ -5,6 +5,8 @@
     <Project Path="src/OpenRFID.Core.Engine/OpenRFID.Core.Engine.csproj" />
     <Project Path="src/OpenRFID.Core.Pipeline/OpenRFID.Core.Pipeline.csproj" />
     <Project Path="src/OpenRFID.Core.Storage/OpenRFID.Core.Storage.csproj" />
+    <Project Path="src/OpenRFID.Management.Api/OpenRFID.Management.Api.csproj" />
+    <Project Path="src/OpenRFID.Simulator/OpenRFID.Simulator.csproj" />
   </Folder>
   <Folder Name="/src/plugins/">
     <Project Path="src/plugins/OpenRFID.Plugins.Identium/OpenRFID.Plugins.Identium.csproj" />
@@ -20,5 +22,8 @@
     <Project Path="tests/OpenRFID.Dispatch.Tests/OpenRFID.Dispatch.Tests.csproj" />
     <Project Path="tests/OpenRFID.Pipeline.Tests/OpenRFID.Pipeline.Tests.csproj" />
     <Project Path="tests/OpenRFID.Plugins.Tests/OpenRFID.Plugins.Tests.csproj" />
+    <Project Path="tests/OpenRFID.Management.Tests/OpenRFID.Management.Tests.csproj" />
+    <Project Path="tests/OpenRFID.Stress.Tests/OpenRFID.Stress.Tests.csproj" />
+    <Project Path="tests/OpenRFID.E2E.Tests/OpenRFID.E2E.Tests.csproj" />
   </Folder>
 </Solution>
