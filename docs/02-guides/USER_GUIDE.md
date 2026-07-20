@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="../images/logo.svg" alt="OpenRFID Middleware Logo" width="360" style="max-width: 100%; height: auto;" />
+</p>
+
 # OpenRFID Middleware User Guide & Use Cases 📡
 
 > **Universal, Enterprise-Grade, Open-Source RFID Middleware User Guide**
@@ -5,6 +9,7 @@
 Welcome to the **OpenRFID Middleware User Guide**. This document provides step-by-step instructions on how to install, run, configure, and use OpenRFID Middleware locally, along with detailed walkthroughs for all core enterprise use cases.
 
 ---
+
 
 ## 📋 Table of Contents
 

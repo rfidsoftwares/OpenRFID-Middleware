@@ -1,10 +1,21 @@
-# OpenRFID Middleware 📡
+<p align="center">
+  <img src="docs/images/logo.svg" alt="OpenRFID Middleware Logo" width="360" style="max-width: 100%; height: auto;" />
+</p>
 
-> **Universal, Enterprise-Grade, Open-Source RFID Middleware**
+<p align="center">
+  <strong>Universal, Enterprise-Grade, Open-Source RFID Middleware</strong>
+</p>
+
+<p align="center">
+  <a href="docs/02-guides/USER_GUIDE.md"><img src="https://img.shields.io/badge/User_Guide-Read_Documentation-0284c7?style=for-the-badge&logo=bookstack" alt="User Guide"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge" alt="License"></a>
+  <a href="http://localhost:5180/swagger"><img src="https://img.shields.io/badge/OpenAPI-Swagger_v1-85ea2d?style=for-the-badge&logo=swagger" alt="Swagger"></a>
+</p>
 
 OpenRFID Middleware is a modular, high-performance, vendor-agnostic RFID middleware designed to bridge physical RFID reader hardware with modern cloud and on-premise applications. It provides plug-and-play support for major RFID hardware brands, configurable tag filtering/deduplication engines, dynamic payload templating for HTTP (GET, POST, PUT, PATCH), WebSockets, MQTT, and offline resilience queues for uninterrupted operations.
 
 ---
+
 
 ## 🌟 Key Features
 
