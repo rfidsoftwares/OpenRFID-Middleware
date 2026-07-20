@@ -3,10 +3,12 @@
 </p>
 
 <p align="center">
-  <strong>Universal, Enterprise-Grade, Open-Source RFID Middleware</strong>
+  <strong>Universal, Enterprise-Grade, Open-Source RFID Middleware</strong><br>
+  Developed & Maintained by <a href="https://rfidsoftwares.com"><strong>RFID Software India Private Limited</strong></a>
 </p>
 
 <p align="center">
+  <a href="https://rfidsoftwares.com"><img src="https://img.shields.io/badge/Website-rfidsoftwares.com-2563eb?style=for-the-badge&logo=googlechrome" alt="Official Website"></a>
   <a href="docs/02-guides/USER_GUIDE.md"><img src="https://img.shields.io/badge/User_Guide-Read_Documentation-0284c7?style=for-the-badge&logo=bookstack" alt="User Guide"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge" alt="License"></a>
   <a href="http://localhost:5180/swagger"><img src="https://img.shields.io/badge/OpenAPI-Swagger_v1-85ea2d?style=for-the-badge&logo=swagger" alt="Swagger"></a>

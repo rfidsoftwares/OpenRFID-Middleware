@@ -4,7 +4,8 @@
 
 # OpenRFID Middleware User Guide & Use Cases 📡
 
-> **Universal, Enterprise-Grade, Open-Source RFID Middleware User Guide**
+> **Universal, Enterprise-Grade, Open-Source RFID Middleware User Guide**<br>
+> Maintained & Supported by [**RFID Software India Private Limited**](https://rfidsoftwares.com)
 
 Welcome to the **OpenRFID Middleware User Guide**. This document provides step-by-step instructions on how to install, run, configure, and use OpenRFID Middleware locally, along with detailed walkthroughs for all core enterprise use cases.
 
