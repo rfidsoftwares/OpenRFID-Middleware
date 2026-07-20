@@ -75,7 +75,7 @@ public sealed class DailyUniqueFilter : ITagFilter
     /// </summary>
     public string CalculateShiftId(DateTimeOffset timestamp)
     {
-        DateTime local = timestamp.LocalDateTime;
+        DateTime local = timestamp.DateTime;
         DateOnly date = DateOnly.FromDateTime(local);
         TimeOnly time = TimeOnly.FromDateTime(local);
 

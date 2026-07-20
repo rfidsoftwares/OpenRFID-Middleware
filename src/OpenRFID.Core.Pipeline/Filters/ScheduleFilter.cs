@@ -34,7 +34,7 @@ public sealed class ScheduleFilter : ITagFilter
 
         if (StartTime.HasValue && EndTime.HasValue)
         {
-            TimeOnly timeOfDay = TimeOnly.FromDateTime(currentTime.LocalDateTime);
+            TimeOnly timeOfDay = TimeOnly.FromDateTime(currentTime.DateTime);
             bool isWithinTime;
 
             if (StartTime.Value <= EndTime.Value)
