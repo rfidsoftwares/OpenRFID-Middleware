@@ -1,0 +1,24 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/OpenRFID.Core.Abstractions/OpenRFID.Core.Abstractions.csproj" />
+    <Project Path="src/OpenRFID.Core.Dispatch/OpenRFID.Core.Dispatch.csproj" />
+    <Project Path="src/OpenRFID.Core.Engine/OpenRFID.Core.Engine.csproj" />
+    <Project Path="src/OpenRFID.Core.Pipeline/OpenRFID.Core.Pipeline.csproj" />
+    <Project Path="src/OpenRFID.Core.Storage/OpenRFID.Core.Storage.csproj" />
+  </Folder>
+  <Folder Name="/src/plugins/">
+    <Project Path="src/plugins/OpenRFID.Plugins.Identium/OpenRFID.Plugins.Identium.csproj" />
+    <Project Path="src/plugins/OpenRFID.Plugins.Impinj/OpenRFID.Plugins.Impinj.csproj" />
+    <Project Path="src/plugins/OpenRFID.Plugins.LLRP/OpenRFID.Plugins.LLRP.csproj" />
+    <Project Path="src/plugins/OpenRFID.Plugins.MQTT/OpenRFID.Plugins.MQTT.csproj" />
+    <Project Path="src/plugins/OpenRFID.Plugins.Serial/OpenRFID.Plugins.Serial.csproj" />
+    <Project Path="src/plugins/OpenRFID.Plugins.Sockets/OpenRFID.Plugins.Sockets.csproj" />
+    <Project Path="src/plugins/OpenRFID.Plugins.Zebra/OpenRFID.Plugins.Zebra.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/OpenRFID.Core.Tests/OpenRFID.Core.Tests.csproj" />
+    <Project Path="tests/OpenRFID.Dispatch.Tests/OpenRFID.Dispatch.Tests.csproj" />
+    <Project Path="tests/OpenRFID.Pipeline.Tests/OpenRFID.Pipeline.Tests.csproj" />
+    <Project Path="tests/OpenRFID.Plugins.Tests/OpenRFID.Plugins.Tests.csproj" />
+  </Folder>
+</Solution>
